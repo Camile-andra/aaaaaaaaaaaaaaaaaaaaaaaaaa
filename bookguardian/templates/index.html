@@ -1,0 +1,118 @@
+{% extends "base.html" %} {% block title %} Pagina Inicial {% endblock title %}
+{% load static %}
+{% block content %}
+<header>
+    <div id="mainHeader">
+        <h1>Book Guardian</h1>
+        <div id="searchDiv">
+            <input
+                type="text"
+                name="search"
+                id="search"
+                placeholder="Pesquisar Livro"
+            />
+            <i class="fi fi-rr-search" id="searchBtn" title="Pesquisar"></i>
+        </div>
+        <h6>
+            <i id="profileBtn" class="fi fi-rr-circle-user" title="Perfil"></i>
+            <div id="profileMenuHeader">
+                {% if not request.user.is_authenticated %}
+
+                <a href="{% url 'bookguardian:login' %}">
+                    <button id="goToLoginPage">Entrar</button>
+                </a>
+
+                <a href="{% url 'bookguardian:register-user' %}">
+                    <button id="goToRegisterPage">Cadastrar</button>
+                </a>
+
+                {% endif %} {% if request.user.is_authenticated %}
+
+                <div id="userNav">
+                    <a href="{% url 'bookguardian:logout' %}">
+                        <i class="fi fi-rr-exit" id="logout"> Sair</i>
+                    </a>
+
+                    <a href="{% url 'bookguardian:login' %}">
+                        <i class="fi fi-rr-shuffle" id="changeAccont">
+                            Trocar de conta</i
+                        >
+                    </a>
+                </div>
+
+                {% endif %}
+            </div>
+        </h6>
+    </div>
+    <div id="filter">
+        <div>
+            <label for="genre">Gênero:</label>
+            <select id="genre">
+                <option value="">Genérico</option>
+                <option value="F">Ficção Científica</option>
+                <option value="R">Romance</option>
+                <option value="T">Terror</option>
+                <option value="NF">Não Ficção</option>
+                <option value="FA">Fantasia</option>
+                <option value="MHQ">Manga e HQ</option>
+            </select>
+        </div>
+        <div>
+            <label for="readOrNot">Já leu?</label>
+            <select id="readOrNot">
+                <option value="">todos</option>
+                <option value="read">Ja li</option>
+                <option value="nonRead">Nao li</option>
+            </select>
+        </div>
+        <button id="applyFilters">Aplicar Filtros</button>
+    </div>
+
+</header>
+<main>
+    <nav>
+        <a href="">
+            <i id="addBookbtn" class="fi fi-sr-add" title="Adicionar"></i>
+        </a>
+        <a href="">
+            <i id="homeBtn" class="fi fi-sr-home" title="Inicio"></i>
+        </a>
+        <a href="#">
+            <i id="filterBtn" class="fi fi-sr-filter" title="Filtros"></i>
+        </a>
+        <a href=" {% url "bookguardian:settings"  %}">
+            <i
+                id="configBtn"
+                class="fi fi-sr-settings"
+                title="Configuracoes"
+                ></i>
+            </a>
+        </nav>
+        <section>
+            {% if bookguardian %}
+            {% if request.user.is_authenticated %}
+            {% for book in bookguardian %}
+                <div id="alertMsg" style="display:none"><h1>nenhum item encontrado :(</h1><img src="{% static "assets/img/livroTriste.png" %}" alt="livro triste"></div>
+                <a href="#" class="card">
+                    {% if book.read %}
+                        <i class="fi fi-sr-bookmark read"></i>
+                    {% else %}
+                        <i class="fi fi-sr-bookmark nonRead"></i>
+                    {% endif %}
+                    <img src="{{ book.book_image.url }}" alt="capa" />
+                    <div class="backCard">
+                        <p id="title">{{ book.title }}</p>
+                        <p id="autora">{{ book.author_book }}</p>
+                        <h4 style="display: none;" id="tag">{{book.category}}</h4>
+                    </div>
+                </a>
+            {% endfor %}
+            {% endif %}
+            {% else %}
+            <div id="alertMsg" style="display:flex"><h1>nenhum item encontrado :(</h1><img src="{% static "assets/img/livroTriste.png" %}" alt="livro triste"></div>
+
+        {% endif %}
+
+    </section>
+</main>
+{% endblock content %}

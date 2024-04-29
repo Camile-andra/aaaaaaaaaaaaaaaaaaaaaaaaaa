@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+<head>
+   {% include "partials/_head.html" %}
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body data-color="blue" data-theme="dark">
+
+    <!-- Main -->
+    {% block content %}
+
+    {% endblock content %}
+
+    <!-- Footer -->
+    {% include "partials/_footer.html" %}
+
+
+    <script>
+        window.addEventListener("blur", function () {
+            document.title = "Book Guardian";
+        });
+    </script>
+</body>
+</html>
